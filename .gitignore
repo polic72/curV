@@ -1,0 +1,8 @@
+*.o
+curV
+
+obj
+bin
+
+.cache
+compile_commands.json
