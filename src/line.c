@@ -43,6 +43,22 @@ void line_eval(const void* line, const double param, double* eval)
 }
 
 
+paramDist line_project(const void* line, const double* point, double* proj)
+{
+    Line* l = (Line*)line;
+
+    double end0_to_point[3];
+    xyz_minus(point, l->endPoints, end0_to_point);
+
+    double dotp = dot(l->direction, end0_to_point);
+    xyz_scale(l->direction, dotp, proj);
+    xyz_plus(l->endPoints, proj, proj);
+
+    paramDist pd = {dotp, dist(point, proj)};
+    return pd;
+}
+
+
 bool line_createBound(const double* end0, const double* end1, Line* line)
 {
     if (dist(end0, end1) < eps)

@@ -15,10 +15,11 @@ typedef struct {
 
 //Curve line_cuve = {line_getLength, line_isBound, line_getEndPoint, line_eval};
 
-double line_getLength(const void*);
-bool line_isBound(const void*);
-bool line_getEndPoint(const void*, const short, double*);
-void line_eval(const void*, const double, double*);
+double line_getLength(const void* line);
+bool line_isBound(const void* line);
+bool line_getEndPoint(const void* line, const short index, double* endPoint);
+void line_eval(const void* line, const double param, double* point);
+paramDist line_project(const void* line, const double* point, double* proj);
 
 bool line_createBound(const double* end0, const double* end1, Line* line);
 bool line_createUnbound(const double* orign, const double* direction, Line* line);
