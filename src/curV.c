@@ -33,5 +33,12 @@ int main()
     printf("param = %f, dist = %f, project((1, 19, 0)) = (%f, %f, %f)\n", pd_other.param, pd_other.distance, proj_other[0], proj_other[1], proj_other[2]);
 
 
+    double v1[] = {1,0,0};
+    double v2[] = {0,1,0};
+    double norm[] = {0,0,-1};
+    printf("angle((%f, %f, %f), (%f, %f, %f)) = %f\n", v1[0], v1[1], v1[2], v2[0], v2[1], v2[2], angle(v1, v2));
+    printf("angle_plane((%f, %f, %f), (%f, %f, %f), (%f, %f, %f)) = %f\n", v1[0], v1[1], v1[2], v2[0], v2[1], v2[2], norm[0], norm[1], norm[2], angle_plane(v1, v2, norm));
+
+
     return 0;
 }
