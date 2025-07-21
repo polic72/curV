@@ -4,19 +4,22 @@
 
 #include <stdbool.h>
 
-typedef struct {
+typedef struct paramDist{
     double param;
     double distance;
 } paramDist;
 
 //Need to think of ways to handle raw vs normalized parameters.
-typedef struct {
+typedef struct Curve{
     double (*getLength)(const void*);
     bool (*isBound)(const void*);
 
-    bool (*getEndPoint)(const void*, const short index, double* endPoint);
-    //void (*compDeriv)(void*, double, double*);
-    void (*eval)(const void*, const double param, double* point);
+    //Return value is pointer to endPoint, for chaining. Will be null if index is out of range [0, 1].
+    double* (*getEndPoint)(const void*, const short index, double* endPoint);
+    //Return value is pointer to point, for chaining.
+    double* (*compDeriv)(const void*, const double param, double* deriv);
+    //Return value is pointer to point, for chaining.
+    double* (*eval)(const void*, const double param, double* eval);
     paramDist (*project)(const void*, const double* point, double* proj);
 } Curve;
 

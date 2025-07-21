@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdbool.h>
 
 #include "../include/line.h"
@@ -11,18 +12,18 @@ double line_getLength(const void* line)
 }
 
 
-bool line_isBound(const void* line)
+inline bool line_isBound(const void* line)
 {
     Line* l = (Line*)line;
     return l->isBound;
 }
 
 
-bool line_getEndPoint(const void* line, const short index, double* endPoint)
+double* line_getEndPoint(const void* line, const short index, double* endPoint)
 {
     if (index != 0 && index != 1)
     {
-        return false;
+        return NULL;
     }
 
     Line* l = (Line*)line;
@@ -30,16 +31,27 @@ bool line_getEndPoint(const void* line, const short index, double* endPoint)
     endPoint[1] = l->endPoints[1 + 3*index];
     endPoint[2] = l->endPoints[2 + 3*index];
 
-    return true;
+    return endPoint;
 }
 
 
-void line_eval(const void* line, const double param, double* eval)
+double* line_compDeriv(const void* line, const double param, double* deriv)
+{
+    Line* l = (Line*)line;
+    deriv[0] = l->direction[0];
+    deriv[1] = l->direction[1];
+    deriv[2] = l->direction[2];
+    return deriv;
+}
+
+
+double* line_eval(const void* line, const double param, double* eval)
 {
     Line* l = (Line*)line;
     eval[0] = l->endPoints[0] + param * l->direction[0];
     eval[1] = l->endPoints[1] + param * l->direction[1];
     eval[2] = l->endPoints[2] + param * l->direction[2];
+    return eval;
 }
 
 
@@ -66,7 +78,6 @@ bool line_createBound(const double* end0, const double* end1, Line* line)
         return false;
     }
 
-
     line->endPoints[0] = end0[0];
     line->endPoints[1] = end0[1];
     line->endPoints[2] = end0[2];
@@ -92,7 +103,6 @@ bool line_createUnbound(const double* origin, const double* direction, Line* lin
         return false;
     }
 
-
     line->endPoints[0] = origin[0];
     line->endPoints[1] = origin[1];
     line->endPoints[2] = origin[2];
@@ -109,3 +119,5 @@ bool line_createUnbound(const double* origin, const double* direction, Line* lin
 
     return true;
 }
+
+const Curve line_curve = {line_getLength, line_isBound, line_getEndPoint, line_compDeriv, line_eval, line_project};
